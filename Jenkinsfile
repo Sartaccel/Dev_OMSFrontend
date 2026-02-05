@@ -5,21 +5,14 @@ pipeline {
     nodejs 'node18'
   }
 
-  environment {
-    DEPLOY_DIR = "/usr/share/nginx/html"
-  }
-
   stages {
-
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
-    }
-
     stage('Install Dependencies') {
       steps {
-        sh 'npm install'
+        sh '''
+          node -v
+          npm -v
+          npm install
+        '''
       }
     }
 
@@ -32,8 +25,9 @@ pipeline {
     stage('Deploy to Nginx') {
       steps {
         sh '''
-        sudo rm -rf $DEPLOY_DIR/*
-        sudo cp -r dist/* $DEPLOY_DIR/
+          sudo rm -rf /usr/share/nginx/html/*
+          sudo cp -r dist/* /usr/share/nginx/html/
+          sudo systemctl restart nginx
         '''
       }
     }
