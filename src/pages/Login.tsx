@@ -1,73 +1,130 @@
+import Input from "@/components/form/input";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { login } from "@/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import { loginSuccess } from "../features/auth/authSlice";
+import { loginValidation } from "@/validations/loginValidation";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppDispatch } from "@/app/hooks";
+import loginBg from "@/assets/images/login-bg.png";
+import logo from "@/assets/images/logo_icon.png";
+import { Mail, EyeOff } from "lucide-react";
 
 const Login = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    dispatch(
-      loginSuccess({
-        name: "Admin",
-        role: "ADMIN",
-      })
-    );
+const {
+  register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(loginValidation),
+  });
 
-    navigate("/"); 
+  const onSubmit = async (data:any) => {
+    try {
+      await dispatch(login(data));
+      navigate("/");
+    } catch {}
   };
+  const emailValue = watch("email");
+const passwordValue = watch("password");
+
+const isFormValid = emailValue && passwordValue;
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{
-        backgroundImage:
-          "url('https://images.unsplash.com/photo-1581091012184-3b7df3f9185b?auto=format&fit=crop&w=1470&q=80')",
-      }}
-    >
-      <div className="w-full max-w-lg bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-lg">
-        {/* Logo / Title */}
-        <h1 className="text-3xl font-bold text-center text-primary mb-6">
+<div className="h-screen bg-primaryBlue overflow-hidden flex items-center justify-center">
+
+  <div className="flex w-full max-w-6xl mx-auto items-center">
+
+    {/* LEFT IMAGE */}
+<div className="hidden md:flex md:w-[55%] h-full items-center justify-center overflow-hidden">
+  <img
+    src={loginBg}
+    alt="Login"
+    className="h-full w-full object-cover scale-110"
+  />
+</div>
+
+    {/* RIGHT LOGIN */}
+    <div className="flex w-full md:w-[45%] items-center justify-center">
+      
+      <div className="bg-white p-8 rounded-2xl shadow-xl w-[400px]">
+
+       <div className="flex items-center gap-2 mb-4">
+        <img src={logo} className="h-6" />
+        <h2 className="font-semibold text-lg">
           Office Management System
-        </h1>
-        <h2 className="text-xl font-semibold text-center mb-6">Login</h2>
+        </h2>
+      </div>
 
-        {/* Form */}
-        <div className="space-y-4">
-          <input
-            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Email"
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+
+          <Input
+            label="Email"
+            {...register("email")}
+            placeholder="Enter your email"
+            error={errors.email?.message}
+            icon={<Mail size={18} />}
           />
-          <input
+
+          <Input
+            label="Password"
             type="password"
-            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Password"
+            {...register("password")}
+            placeholder="Enter your password"
+            error={errors.password?.message}
+            icon={<EyeOff size={18} />}
           />
 
-          <div className="flex items-center justify-between text-sm text-gray-600">
+          {/* Remember + Forgot */}
+          <div className="flex items-center justify-between text-sm">
             <label className="flex items-center gap-2">
-              <input type="checkbox" /> Remember me
+              <input type="checkbox" />
+              Remember me
             </label>
-            <button className="text-blue-600 hover:underline">
-              Forget password?
+
+            <button
+              type="button"
+              className="hover:underline"
+            >
+              Forgot password
             </button>
           </div>
 
-          <button
-            onClick={handleLogin}
-            className="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition"
-          >
-            Login
-          </button>
-        </div>
+       <button
+  type="submit"
+  disabled={!isFormValid}
+  className={`w-full py-3 rounded-lg font-medium transition
+    ${
+      isFormValid
+        ? "bg-primaryBlue text-white hover:opacity-90"
+        : "bg-gray-300 text-gray-500 cursor-not-allowed"
+    }
+  `}
+>
+  Login
+</button>
+<p className="text-sm text-center mt-4">
+  Don’t have an account?{" "}
+  <span className="text-primaryBlue font-medium cursor-pointer">
+    Sign up
+  </span>
+</p>
+        </form>
 
-        {/* Sign up link */}
-        <p className="mt-6 text-center text-gray-700 text-sm">
-          Don’t have an account?{" "}
-          <button className="text-blue-600 hover:underline">Sign up</button>
-        </p>
       </div>
+
     </div>
+
+  </div>
+
+</div>
+
+
+
   );
 };
 

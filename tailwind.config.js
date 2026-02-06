@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "rgba(0, 143, 235, 1)",      // Blue (buttons, active)
+        primaryBlue: "rgba(155, 195, 246, 1)",      // Blue (buttons, active)
         primaryLight: "#EFF6FF",
         sidebar: "#FFFFFF",
         header: "#FFFFFF",
@@ -16,7 +16,7 @@ module.exports = {
         danger: "#EF4444",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
+        app: ["Parkinsans", "sans-serif"],
       },
       boxShadow: {
         card: "0 1px 2px rgba(0,0,0,0.06)",
