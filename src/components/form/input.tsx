@@ -21,7 +21,7 @@ const Input = ({ label, error, icon, type, ...rest }: InputProps) => {
 
       {/* Input box */}
     <div
-  className={`relative flex items-center border rounded-lg h-[50px] px-4 bg-gray-50
+  className={`relative flex items-center border-[1.2px] border-[rgba(223,233,239,1)] border-[rgba(0,0,0,0.1)] rounded-[3px] h-[50px] px-4 bg-gray-50
   ${error ? "border-red-500" : "border-gray-300"}
   focus-within:ring-2 focus-within:ring-primaryBlue`}
 >
