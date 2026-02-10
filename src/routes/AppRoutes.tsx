@@ -3,6 +3,8 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Dashboard from "../pages/Dashboard";
 import Tasks from "../pages/Tasks";
 import Newtasks from "../pages/Newtasks";
+import AddCustomer from "../pages/AddCustomer";
+import Edittask from "../pages/Edittask";
 import Clients from "../pages/Clients";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -18,6 +20,8 @@ export default function AppRouter() {
           <Route index element={<Dashboard />} />
           <Route path="tasks" element={<Tasks />} />
           <Route path="newtasks" element={<Newtasks />} />
+          <Route path="edittask" element={<Edittask />} />
+          <Route path="addcustomer" element={<AddCustomer />} />
           <Route path="clients" element={<Clients />} />
         </Route>
       </Routes>

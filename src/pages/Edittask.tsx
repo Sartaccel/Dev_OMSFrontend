@@ -4,8 +4,7 @@ import Input from "../components/form/input";
 import Dropdown from "../components/form/dropdown";
 import Textarea from "../components/form/textarea";
 
-
-export default function NewTask() {
+export default function EditTask() {
     const [docRequest, setDocRequest] = useState(false);
     const navigate = useNavigate();
 
@@ -14,18 +13,18 @@ export default function NewTask() {
 
             {/* Header */}
             <div className="flex items-center gap-2 font-medium text-black border-b border-blue-200 pb-3 mb-4">
-                <img
+                 <img
                     src="src/assets/images/arrow-left.svg"
                     alt="back"
                     className="w-4 h-4 cursor-pointer"
                     onClick={() => navigate("/tasks")}
                     title="Back to Tasks"
                 />
-
                 <span>Task</span>
                 <span>{">"}</span>
-                <span className="font-medium text-black">New Task</span>
+                <span className="font-medium text-black">Edit Task</span>
             </div>
+
             {/* Main Container */}
             <div className="bg-white rounded-md p-6 h-full overflow-hidden">
 
@@ -39,7 +38,6 @@ export default function NewTask() {
 
                     <Input label="Target Date" type="date" />
 
-
                     <Dropdown
                         label="Users"
                         options={["Admin", "Manager", "Staff"]}
@@ -50,6 +48,7 @@ export default function NewTask() {
                         options={["Normal", "Low"]}
                     />
 
+                    {/* Description */}
                     <div className="col-span-2">
                         <Textarea
                             label="Description"
@@ -57,13 +56,13 @@ export default function NewTask() {
                             placeholder="Enter description"
                         />
                     </div>
-
                 </div>
-
 
                 {/* Toggle */}
                 <div className="flex items-center gap-3 mt-5">
-                    <span className="text-xs">Create Doc. Collection Request</span>
+                    <span className="text-xs">
+                        Create Doc. Collection Request
+                    </span>
 
                     <button
                         onClick={() => setDocRequest(!docRequest)}
@@ -79,7 +78,7 @@ export default function NewTask() {
 
                 {/* Save */}
                 <button className="mt-6 bg-[#0b84e5] text-white px-10 py-1.5 rounded text-sm">
-                    Save
+                    Update
                 </button>
             </div>
         </div>
