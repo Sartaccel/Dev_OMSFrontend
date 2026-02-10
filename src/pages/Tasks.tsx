@@ -1,26 +1,27 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Dropdown from "../components/form/dropdown";
+import Checkbox from "../components/form/checkbox";
 
 
 const Tasks = () => {
-  const [selectAll, setSelectAll] = useState(false);
-  const [rows, setRows] = useState([false]); // one row for now
+  const [selectAll, setSelectAll] = useState<boolean>(false);
+  const [rows, setRows] = useState<boolean[]>([false]);
+  const [openMenu, setOpenMenu] = useState<number | null>(null);
+
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-[#EEF7FF] p-3">
 
-
-
-
       {/* Main Card */}
-      <div className="bg-white rounded-lg border overflow-hidden">
+      <div className="bg-white rounded-lg border overflow-visible">
 
         <div className="bg-white px-4 py-3 flex justify-between items-center border-b border-blue-200">
 
           <div className="flex items-center gap-2 text-base font-medium">
             <img
-              src="src/assets/images/arrow-right.svg"
+              src="src/assets/images/arrow-left.svg"
               alt="back"
               className="w-4 h-4"
             />
@@ -45,24 +46,22 @@ const Tasks = () => {
         {/* Filters */}
         <div className="px-4 py-3 grid grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end border-blue-200">
           <div>
-            <p className="text-xs mb-1">Date</p>
-            <select className="w-full border border-blue-200 rounded-md px-3 py-2 text-sm">
-              <option>All Time</option>
-            </select>
+
+            <Dropdown label="Date" options={["All Time", "Today", "This Week"]} />
           </div>
 
           <div>
-            <p className="text-xs mb-1">Service</p>
-            <select className="w-full border border-blue-200 rounded-md px-3 py-2 text-sm">
-              <option>Select...</option>
-            </select>
+            <Dropdown
+              label="Service"
+              options={["Select...", "Audit", "Tax", "Compliance"]}
+            />
           </div>
 
           <div>
-            <p className="text-xs mb-1">Status</p>
-            <select className="w-full border border-blue-200 rounded-md px-3 py-2 text-sm">
-              <option>Select...</option>
-            </select>
+            <Dropdown
+              label="Status"
+              options={["Select...", "Pending", "Completed"]}
+            />
           </div>
 
           <div className="flex gap-2">
@@ -81,7 +80,7 @@ const Tasks = () => {
             </button>
             <button className="border border-blue-200 rounded-md px-3 py-2">
               <img
-                src="src/assets/images/arrow-left.svg"
+                src="src/assets/images/arrow-right.svg"
                 alt="left arrow"
                 className="w-4 h-4"
               />
@@ -92,20 +91,18 @@ const Tasks = () => {
 
 
         {/* Table Header */}
-        <div className="grid grid-cols-[36px_110px_2fr_2.5fr_100px_100px_120px_70px_70px_90px_36px]
+        <div className="grid grid-cols-[36px_110px_2fr_2.5fr_100px_100px_120px_70px_70px_90px_50px]
  pl-2 pr-4 py-2 text-[11px] text-[#6B7C93] border-b border-blue-200 items-center divide-x divide-blue-200">
 
           {/* Checkbox */}
-          <input
-            type="checkbox"
-            className="accent-blue-600"
+          <Checkbox
             checked={selectAll}
-            onChange={(e) => {
-              const checked = e.target.checked;
+            onChange={(checked) => {
               setSelectAll(checked);
               setRows(rows.map(() => checked));
             }}
           />
+
 
           {["DATE", "TASK", "CLIENT", "DUE DATE", "TARGET DATE", "COMPLETED ON", "USERS", "TAGS", "STATUS"].map((col) => (
             <div key={col} className="flex items-center justify-between pl-2 pr-2">
@@ -123,61 +120,94 @@ const Tasks = () => {
 
           ))}
 
-          {/* Gear */}
-          <img
-            src="src/assets/images/settings.svg"
-            className="w-4 h-4 opacity-60"
-          />
+          <div className="px-2 flex justify-center">
+            <img
+              src="src/assets/images/settings.svg"
+              className="w-4 h-4 opacity-60"
+            />
+          </div>
+
 
         </div>
 
 
         {/* Row */}
-        <div className="grid grid-cols-[36px_110px_2fr_2.5fr_100px_100px_120px_70px_70px_90px_36px]
- pl-2 pr-4 py-2 items-center text-[13px] bg-[#F3FAFF] ">
-
-          <input
-            type="checkbox"
-            className="accent-blue-600"
+        <div
+          className="grid grid-cols-[36px_110px_2fr_2.5fr_100px_100px_120px_70px_70px_90px_36px]
+  pl-2 pr-4 py-3 items-center text-[13px] bg-[#F3FAFF]"
+        >
+          {/* Checkbox */}
+          <Checkbox
             checked={rows[0]}
-            onChange={(e) => {
+            onChange={(checked) => {
               const updated = [...rows];
-              updated[0] = e.target.checked;
+              updated[0] = checked;
               setRows(updated);
               setSelectAll(updated.every(Boolean));
             }}
           />
 
-          <span>29-09-2025</span>
+          <span className="px-2">29-09-2025</span>
 
-          <div>
+          <div className="px-2">
             MCA Compliances-Annual Returns
-            <div className="text-blue-600 text-xs">
+            <div className="text-blue-600 text-xs mt-0.5">
               Preparation of Board Report
             </div>
           </div>
 
-          <span>
+          <span className="px-2">
             FOUNTAINHEAD INTEGRATED COMMUNICATION PRIVATE LTD
           </span>
 
-          <span></span>
-          <span></span>
-          <span></span>
+          <span className="px-2"></span>
+          <span className="px-2"></span>
+          <span className="px-2"></span>
 
-          <div className="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs">
-            S
+          <div className="px-2">
+            <div className="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs">
+              S
+            </div>
           </div>
 
-          <span></span>
+          <span className="px-2"></span>
 
-          <span className="bg-yellow-200 px-2 py-1 rounded text-xs w-fit">
-            Pending
+          <span className="px-2 -ml-2">
+            <span className="bg-yellow-200 px-2 py-1 rounded text-xs inline-block">
+              Pending
+            </span>
           </span>
 
-          <span className="text-gray-400">⋮</span>
+          <div className="relative px-2">
+            <button
+              onClick={() => setOpenMenu(openMenu === 0 ? null : 0)}
+              className="text-gray-400 text-lg leading-none"
+            >
+              ⋮
+            </button>
+
+            {openMenu === 0 && (
+              <div
+                className="absolute right-0 top-full mt-2 z-50
+                 bg-white border border-blue-100
+                 rounded-md shadow-lg w-28"
+              >
+                <button
+                  onClick={() => {
+                    setOpenMenu(null);
+                    navigate("/edittask");
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-blue-50"
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+          </div>
+
 
         </div>
+
 
       </div>
 
