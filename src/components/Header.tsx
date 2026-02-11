@@ -1,35 +1,72 @@
-export default function Header() {
-  return (
-    <header className="h-16 bg-header border-b border-border flex items-center justify-between px-6">
-      {/* Left */}
-      <h1 className="text-sm font-medium text-textSecondary">
-        JM CORPORATE SERVICES LLP
-      </h1>
+import { Bell, ChevronDown, Search } from "lucide-react";
+import Logo from "../assets/logo icon.svg";
 
-      {/* Right */}
-      <div className="flex items-center gap-6">
-        <input
-          type="text"
-          placeholder="Search Clients"
-          className="h-9 w-64 rounded-md border border-border px-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+const Header = () => {
+  return (
+    <header className="w-full h-16 border-b bg-white flex items-center px-6">
+      
+      {/* LEFT — Logo */}
+      <div className="flex items-center gap-3 min-w-[220px]">
+        <img
+          src={Logo}
+          alt="OMS Logo"
+          className="h-8 w-auto object-contain"
         />
 
-        <button className="relative text-lg">
-          <span className="w-2 h-2 bg-danger rounded-full absolute -top-1 -right-1"></span>
-          🔔
+        <span className="text-lg font-semibold text-gray-800">
+          OMS
+        </span>
+      </div>
+
+      {/* CENTER — Company Name */}
+      <div className="flex-1 flex justify-center">
+        <span className="text-sm font-medium text-gray-600">
+          JM CORPORATE SERVICES LLP
+        </span>
+      </div>
+
+      {/* RIGHT — Search + Actions */}
+      <div className="flex items-center gap-5">
+        
+        {/* Search */}
+        <div className="relative w-72">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <input
+            type="text"
+            placeholder="Search Clients"
+            className="w-full pl-10 pr-4 py-2 text-sm border rounded-full focus:outline-none"
+          />
+        </div>
+
+        {/* Notification */}
+        <button className="relative text-gray-600">
+          <Bell className="w-5 h-5" />
+          <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
         </button>
 
-        <div className="flex items-center gap-2">
+        {/* Profile */}
+        <div className="flex items-center gap-2 cursor-pointer">
           <img
             src="https://i.pravatar.cc/40"
-            className="w-8 h-8 rounded-full"
+            alt="Profile"
+            className="w-8 h-8 rounded-full object-cover"
           />
-          <div className="text-sm leading-tight">
-            <p className="font-medium text-textPrimary">Manish</p>
-            <p className="text-xs text-textSecondary">UI/UX Designer</p>
+
+          <div className="hidden sm:flex flex-col leading-tight">
+            <span className="text-sm font-medium text-gray-800">
+              Manish
+            </span>
+            <span className="text-xs text-gray-500">
+              UI/UX Designer
+            </span>
           </div>
+
+          <ChevronDown className="w-4 h-4 text-gray-500" />
         </div>
+
       </div>
     </header>
   );
-}
+};
+
+export default Header;
