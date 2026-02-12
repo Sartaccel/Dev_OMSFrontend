@@ -3,6 +3,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Dashboard from "../pages/Dashboard";
 import Tasks from "../pages/Task/Tasklist";
 import Newtasks from "../pages/Task/Newtasks";
+//import Customers from "../pages/Customers";
 // import AddCustomer from "../pages/AddCustomer";
 // import Edittask from "../pages/Task/Edittask";
 import Clients from "../pages/Clients";
@@ -25,12 +26,13 @@ export default function AppRouter() {
           <Route path="newtasks" element={<Newtasks />} />
           <Route path="tasks/:id/edit" element={<Newtasks />} />
           {/* <Route path="addcustomer" element={<AddCustomer />} /> */}
-          <Route path="clients" element={<Clients />} />
+          {/* <Route path="clients" element={<Clients />} /> */}
+         <Route path="clients" element={<Clients />} />
            <Route path="users" element={<Users />} />
             <Route path="users/add" element={<NewUser />} />
             <Route path="users/edit/:id" element={<NewUser />} />
-          {/* <Route path="customers" element={<Customers />} /> */}
-        </Route>
+          {/* <Route path="customers" element={<Customers />} /> */}        
+          </Route>
       </Routes>
     </BrowserRouter>
   );

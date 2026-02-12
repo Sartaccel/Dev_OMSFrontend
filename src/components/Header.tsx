@@ -3,7 +3,7 @@ import Logo from "../assets/logo icon.svg";
 
 const Header = () => {
   return (
-    <header className="w-full h-16 border-b bg-white flex items-center px-6">
+    <header className="sticky top-0 z-50 w-full h-16 border-b bg-white flex items-center px-6">
       
       {/* LEFT — Logo */}
       <div className="flex items-center gap-3 min-w-[220px]">
