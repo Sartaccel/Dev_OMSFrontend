@@ -1,80 +1,148 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
+// Icons
+import { LuLayoutDashboard } from "react-icons/lu";
+import { GrTask } from "react-icons/gr";
+import { MdAddTask } from "react-icons/md";
+import { TbUsers } from "react-icons/tb";
+import { BsGraphUpArrow } from "react-icons/bs";
+import { HiOutlineDocumentReport } from "react-icons/hi";
+import { PiUserCircleLight } from "react-icons/pi";
+import { IoSettingsOutline } from "react-icons/io5";
+import { Headphones } from "lucide-react";
 
 const menuClass =
-  "flex items-center gap-3 px-4 py-2 rounded-lg text-sm";
+  "flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-all";
 
 export default function Sidebar() {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    // Clear user auth tokens/data from localStorage (or anywhere you keep)
-    localStorage.removeItem("authToken");
-
-    // Redirect to login page or homepage
-    navigate("/login");
-  };
-
   return (
-    <aside className="w-64 h-screen bg-sidebar border-r border-border flex flex-col">
-      {/* Logo */}
-      <div className="h-16 flex items-center px-6 border-b border-border">
-        <span className="text-xl font-semibold text-primary">OMS</span>
-      </div>
+    <aside className="w-64 bg-[#eef3f7] border-r border-gray-200 p-3">
+      
+      {/* Rounded Container */}
+      <div className="h-full bg-white/60 rounded-2xl p-3 flex flex-col">
 
-      {/* Menu */}
-      <nav className="flex-1 px-4 py-6 space-y-2">
-        <NavLink
-          to="/"
-          className={({ isActive }) =>
-            `${menuClass} ${
-              isActive
-                ? "bg-primaryLight text-primary font-medium"
-                : "text-textSecondary hover:bg-primaryLight hover:text-primary"
-            }`
-          }
-        >
-          Dashboard
-        </NavLink>
+        {/* Menu Items */}
+        <nav className="space-y-2">
+          
+          {/* Dashboard */}
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `${menuClass} ${
+                isActive
+                  ? "bg-blue-500 text-white shadow-sm"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`
+            }
+          >
+            <LuLayoutDashboard className="text-[20px]" />
+            Dashboard
+          </NavLink>
 
-        <NavLink
-          to="/tasks"
-          className={({ isActive }) =>
-            `${menuClass} ${
-              isActive
-                ? "bg-primaryLight text-primary font-medium"
-                : "text-textSecondary hover:bg-primaryLight hover:text-primary"
-            }`
-          }
-        >
-          Tasks
-        </NavLink>
+          {/* Task */}
+          <NavLink
+            to="/tasks"
+            className={({ isActive }) =>
+              `${menuClass} ${
+                isActive
+                  ? "bg-blue-500 text-white"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`
+            }
+          >
+            <GrTask className="text-[20px]" />
+            Task
+          </NavLink>
 
-        <NavLink
-          to="/clients"
-          className={({ isActive }) =>
-            `${menuClass} ${
-              isActive
-                ? "bg-primaryLight text-primary font-medium"
-                : "text-textSecondary hover:bg-primaryLight hover:text-primary"
-            }`
-          }
-        >
-          Clients
-        </NavLink>
-      </nav>
+          {/* To-Do */}
+          <NavLink
+            to="/todo"
+            className={({ isActive }) =>
+              `${menuClass} ${
+                isActive
+                  ? "bg-blue-500 text-white"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`
+            }
+          >
+            <MdAddTask className="text-[20px]" />
+            To-Do
+          </NavLink>
 
-      {/* Bottom - Settings and Logout */}
-      <div className="px-4 py-4 border-t border-border mt-auto space-y-2">
-        <button className="w-full text-left px-4 py-2 text-sm rounded-lg text-textSecondary hover:bg-primaryLight hover:text-primary">
-          Settings
-        </button>
+          {/* Customers */}
+          <NavLink
+            to="/customers"
+            className={({ isActive }) =>
+              `${menuClass} ${
+                isActive
+                  ? "bg-blue-500 text-white"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`
+            }
+          >
+            <TbUsers className="text-[20px]" />
+            Customers
+          </NavLink>
 
-        <button
-          onClick={handleLogout}
-          className="w-full text-left px-4 py-2 text-sm rounded-lg text-textSecondary hover:bg-primaryLight hover:text-primary"
-        >
-          Logout
-        </button>
+          {/* Finance */}
+          <NavLink
+            to="/finance"
+            className={({ isActive }) =>
+              `${menuClass} ${
+                isActive
+                  ? "bg-blue-500 text-white"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`
+            }
+          >
+            <BsGraphUpArrow className="text-[20px]" />
+            Finance
+          </NavLink>
+
+          {/* Reports */}
+          <NavLink
+            to="/reports"
+            className={({ isActive }) =>
+              `${menuClass} ${
+                isActive
+                  ? "bg-blue-500 text-white"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`
+            }
+          >
+            <HiOutlineDocumentReport className="text-[20px]" />
+            Reports
+          </NavLink>
+
+          {/* Users */}
+          <NavLink
+            to="/users"
+            className={({ isActive }) =>
+              `${menuClass} ${
+                isActive
+                  ? "bg-blue-500 text-white"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`
+            }
+          >
+            <PiUserCircleLight className="text-[20px]" />
+            Users
+          </NavLink>
+        </nav>
+
+        {/* Bottom Section */}
+        <div className="mt-auto pt-6 border-t border-gray-200 space-y-2">
+          <button className="w-full flex items-center gap-3 px-4 py-3 text-sm rounded-lg text-gray-700 hover:bg-gray-100">
+            <IoSettingsOutline className="text-[20px]" />
+            Settings
+          </button>
+
+          <button className="w-full flex items-center gap-3 px-4 py-3 text-sm rounded-lg text-gray-700 hover:bg-gray-100">
+            <Headphones className="w-5 h-5" />
+            Support
+          </button>
+        </div>
+
       </div>
     </aside>
   );

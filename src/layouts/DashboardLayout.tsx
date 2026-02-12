@@ -4,15 +4,22 @@ import Sidebar from "../components/Sidebar";
 
 const DashboardLayout = () => {
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
+    <div className="min-h-screen flex flex-col bg-gray-100">
+      
+      {/* Top Header (FULL WIDTH) */}
+      <Header />
 
-      <div className="flex-1 flex flex-col">
-        <Header />
-        <main className="p-4 flex-1 bg-gray-100">
+      {/* Body Layout */}
+      <div className="flex flex-1">
+        {/* Sidebar */}
+        <Sidebar />
+
+        {/* Main Content */}
+        <main className="flex-1 p-6">
           <Outlet />
         </main>
       </div>
+
     </div>
   );
 };
