@@ -3,12 +3,20 @@ import { Eye, EyeOff } from "lucide-react";
 
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+  label?: string;
   error?: string;
   icon?: React.ReactNode;
+  variant?: "default" | "login";
 }
 
-const Input = ({ label, error, icon, type, ...rest }: InputProps) => {
+const Input = ({
+  label,
+  error,
+  icon,
+  type,
+  variant = "default",
+  ...rest
+}: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const isPassword = type === "password";
@@ -16,38 +24,57 @@ const Input = ({ label, error, icon, type, ...rest }: InputProps) => {
   return (
     <div className="w-full">
       {/* Label */}
-      <label className="block text-sm font-medium mb-1">
-        {label}
-      </label>
+      {label && (
+        <label className="block text-sm font-medium mb-1 text-gray-700">
+          {label}
+        </label>
+      )}
 
-      {/* Input box */}
-    <div
-  className={`relative flex items-center border-[1.2px] border-[rgba(223,233,239,1)] border-[rgba(0,0,0,0.1)] rounded-[3px] h-[50px] px-4 bg-gray-50
-  ${error ? "border-red-500" : "border-gray-300"}
-  focus-within:ring-2 focus-within:ring-primaryBlue`}
->
+      {/* Input Box */}
+      <div
+        className={`
+        relative flex items-center 
+        border rounded-md
+        h-[46px] px-3
+        transition-all duration-150
 
+        ${
+          variant === "login"
+            ? "bg-white border-gray-300"
+            : "bg-[#F4F7FA] border-[#E2E8F0]"
+        }
+
+        ${error ? "border-red-500" : ""}
+        focus-within:border-blue-500
+        focus-within:ring-1 focus-within:ring-blue-500
+      `}
+      >
+        {/* Input */}
         <input
           {...rest}
           type={isPassword && showPassword ? "text" : type}
-          className="w-full outline-none text-sm bg-transparent"
+          className="w-full outline-none text-sm bg-transparent placeholder:text-gray-400"
         />
 
-        {/* Right icon */}
+        {/* Right Icon / Password Toggle */}
         {isPassword ? (
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="text-gray-400"
+            className="ml-2 text-gray-400 hover:text-gray-600 flex items-center"
           >
             {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
           </button>
         ) : (
-          icon && <span className="text-gray-400">{icon}</span>
+          icon && (
+            <span className="ml-2 text-gray-400 flex items-center">
+              {icon}
+            </span>
+          )
         )}
       </div>
 
-      {/* Error message – RIGHT SIDE */}
+      {/* Error */}
       {error && (
         <p className="text-red-500 text-xs mt-1 text-right">
           {error}
