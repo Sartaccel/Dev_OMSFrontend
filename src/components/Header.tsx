@@ -1,9 +1,21 @@
-import { Bell, ChevronDown, Search } from "lucide-react";
+import { Bell, ChevronDown, Search,Menu } from "lucide-react";
 import Logo from "../assets/logo icon.svg";
+import { useAppDispatch } from "@/app/hooks";
+import { toggleSidebar } from "@/features/sidebar/sidebarSlice";
 
 const Header = () => {
+   const dispatch = useAppDispatch();
+
   return (
     <header className="sticky top-0 z-50 w-full h-16 border-b bg-white flex items-center px-3 sm:px-6">
+
+      {/* Mobile Toggle*/}
+      <button
+        onClick={() => dispatch(toggleSidebar())}
+        className="md:hidden p-2 mr-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+      >
+        <Menu className="w-6 h-6" />
+      </button> 
 
       {/* LEFT — Logo */}
       <div className="flex items-center gap-2 sm:gap-3 min-w-fit sm:min-w-[220px]">

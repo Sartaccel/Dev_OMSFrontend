@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
-
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
@@ -41,7 +40,7 @@ const Input = ({
         ${
           variant === "login"
             ? "bg-white border-gray-300"
-            : "bg-[#F4F7FA] border-[#E2E8F0]"
+            : "bg-[#F0F7FC] border-[#DFE9EF]"
         }
 
         ${error ? "border-red-500" : ""}
@@ -53,7 +52,11 @@ const Input = ({
         <input
           {...rest}
           type={isPassword && showPassword ? "text" : type}
-          className="w-full outline-none text-sm bg-transparent placeholder:text-gray-400"
+          className="w-full outline-none text-sm bg-transparent placeholder:text-gray-400
+            [&::-webkit-outer-spin-button]:appearance-none
+            [&::-webkit-inner-spin-button]:appearance-none
+            [-moz-appearance:textfield]
+          "
         />
 
         {/* Right Icon / Password Toggle */}

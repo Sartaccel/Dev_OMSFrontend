@@ -23,11 +23,11 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`sticky top-16 z-40 bg-[#EBF7FF] border-r border-gray-200 p-3 transition-all duration-300
+      className={`fixed md:sticky top-16 left-0 z-40 bg-[#EBF7FF] py-3 ps-3 transition-all duration-300
       h-[calc(100vh-4rem)]
-      ${isOpen ? "w-64" : "w-20"}`}
+      ${isOpen ? "w-64 translate-x-0" : "w-64 -translate-x-full md:w-20 md:translate-x-0"}`}
     >
-      <div className="bg-white/60 rounded-2xl p-3 flex flex-col h-full">
+      <div className="bg-white rounded-2xl p-3 flex flex-col h-full">
 
         {/* ===== Header ===== */}
         <div

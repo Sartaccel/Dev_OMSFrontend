@@ -74,7 +74,7 @@ export default function Todo() {
               onChange={(e) =>
                 handleChange("details", e.target.value)
               }
-              className="w-full px-3 py-2 border border-[#E2E8F0] rounded-md bg-[#F4F7FA] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm resize-none"
+              className="w-full px-3 py-2 border border-[#DFE9EF] rounded-md bg-[#F0F7FC] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm resize-none"
               rows={2}
             />
           </div>
@@ -104,7 +104,7 @@ export default function Todo() {
                   onChange={(e) =>
                     handleChange("dueDate", e.target.value)
                   }
-                  className="w-full px-3 py-2 border border-[#E2E8F0] rounded-md bg-[#F4F7FA] text-sm"
+                  className="w-full px-3 py-2 border border-[#DFE9EF] rounded-md bg-[#F0F7FC] text-sm"
                 />
               </div>
             )}
