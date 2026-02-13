@@ -14,10 +14,6 @@ import { FaRegUser } from "react-icons/fa6";
 import { IoSettingsOutline } from "react-icons/io5";
 import { Headphones } from "lucide-react";
 
-/* ===== Styles ===== */
-const menuClass =
-  "flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-all cursor-pointer";
-
 export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,7 +23,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`sticky top-16 z-40 bg-[#eef3f7] border-r border-gray-200 p-3 transition-all duration-300 overflow-y-auto
+      className={`sticky top-16 z-40 bg-[#EBF7FF] border-r border-gray-200 p-3 transition-all duration-300
       h-[calc(100vh-4rem)]
       ${isOpen ? "w-64" : "w-20"}`}
     >
@@ -35,17 +31,17 @@ export default function Sidebar() {
 
         {/* ===== Header ===== */}
         <div
-          className={`flex items-center mb-4 ${
+          className={`flex items-center mb-3 sm:mb-4 px-1 ${
             isOpen ? "justify-between" : "justify-center"
           }`}
         >
           {isOpen && (
-            <span className="font-semibold text-gray-700">Menu</span>
+            <span className="font-semibold text-gray-700 text-sm">Menu</span>
           )}
 
           <button
             onClick={() => dispatch(toggleSidebar())}
-            className="text-xl text-gray-600 hover:text-black hover:bg-gray-100 p-2 rounded-lg transition-colors"
+            className="text-lg sm:text-xl text-gray-600 hover:text-black hover:bg-gray-100 p-1.5 sm:p-2 rounded-lg transition-colors"
             title={isOpen ? "Collapse menu" : "Expand menu"}
           >
             <MdMenu />
@@ -53,7 +49,7 @@ export default function Sidebar() {
         </div>
 
         {/* ===== Menu ===== */}
-        <nav className="space-y-2">
+        <nav className={`${isOpen ? "space-y-1" : "space-y-1"}`}>
 
           <MenuItem
             to="/"
@@ -121,21 +117,21 @@ export default function Sidebar() {
         </nav>
 
         {/* ===== Bottom ===== */}
-        <div className="mt-auto pt-6 border-t border-gray-200 space-y-2">
+        <div className={`mt-auto pt-3 sm:pt-6 border-t border-gray-200 ${isOpen ? "space-y-1 sm:space-y-2" : "space-y-1"}`}>
 
           <div
-            className={`w-full flex items-center gap-3 px-4 py-3 text-sm rounded-lg 
-            ${!isOpen && "justify-center"}
-            text-gray-700 hover:bg-gray-100 cursor-pointer`}
+            className={`w-full flex items-center text-sm rounded-lg transition-colors text-gray-700 hover:bg-gray-100 cursor-pointer
+            ${isOpen ? "gap-3 px-4 py-3 justify-start" : "gap-0 px-3 py-3 justify-center"}`}
+            title={!isOpen ? "Settings" : undefined}
           >
             <IoSettingsOutline className="text-[20px]" />
             {isOpen && "Settings"}
           </div>
 
           <div
-            className={`w-full flex items-center gap-3 px-4 py-3 text-sm rounded-lg 
-            ${!isOpen && "justify-center"}
-            text-gray-700 hover:bg-gray-100 cursor-pointer`}
+            className={`w-full flex items-center text-sm rounded-lg transition-colors text-gray-700 hover:bg-gray-100 cursor-pointer
+            ${isOpen ? "gap-3 px-4 py-3 justify-start" : "gap-0 px-3 py-3 justify-center"}`}
+            title={!isOpen ? "Support" : undefined}
           >
             <Headphones className="w-5 h-5" />
             {isOpen && "Support"}
@@ -143,9 +139,9 @@ export default function Sidebar() {
 
           <div
             onClick={() => navigate("/login")}
-            className={`w-full flex items-center gap-3 px-4 py-3 text-sm rounded-lg 
-            ${!isOpen && "justify-center"}
-            text-gray-700 hover:bg-gray-100 cursor-pointer`}
+            className={`w-full flex items-center text-sm rounded-lg transition-colors text-gray-700 hover:bg-gray-100 cursor-pointer
+            ${isOpen ? "gap-3 px-4 py-3 justify-start" : "gap-0 px-3 py-3 justify-center"}`}
+            title={!isOpen ? "Logout" : undefined}
           >
             <TbLogout2 className="text-[20px]" />
             {isOpen && "Logout"}
@@ -182,16 +178,17 @@ function MenuItem({
   return (
     <div
       onClick={() => navigate(to)}
-      className={`${menuClass}
-      ${!isOpen && "justify-center"}
+      className={`flex items-center gap-3 rounded-lg text-sm transition-all cursor-pointer
+      ${isOpen ? "px-4 py-3 justify-start" : "px-3 py-3 justify-center"}
       ${
         isActive
-          ? "bg-blue-500 text-white shadow-sm"
+          ? "bg-blue-500 text-white shadow-md font-medium"
           : "text-gray-700 hover:bg-gray-100"
       }`}
+      title={!isOpen ? label : undefined}
     >
       {icon}
-      {isOpen && label}
+      {isOpen && <span>{label}</span>}
     </div>
   );
 }

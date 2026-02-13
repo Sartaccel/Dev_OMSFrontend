@@ -9,7 +9,7 @@ import Newtasks from "../pages/Task/Newtasks";
 import Clients from "../pages/Clients";
 import Users from "../pages/User/UserList";
 import NewUser from "../pages/User/NewUser";
-
+import Todo from "../pages/Todo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function AppRouter() {
@@ -25,6 +25,7 @@ export default function AppRouter() {
           <Route path="tasks" element={<Tasks />} />
           <Route path="newtasks" element={<Newtasks />} />
           <Route path="tasks/:id/edit" element={<Newtasks />} />
+          <Route path="todo" element={<Todo />} />
           {/* <Route path="addcustomer" element={<AddCustomer />} /> */}
           {/* <Route path="clients" element={<Clients />} /> */}
          <Route path="clients" element={<Clients />} />
