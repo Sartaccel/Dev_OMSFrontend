@@ -3,35 +3,43 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Dashboard from "../pages/Dashboard";
 import Tasks from "../pages/Task/Tasklist";
 import Newtasks from "../pages/Task/Newtasks";
-// import AddCustomer from "../pages/AddCustomer";
-// import Edittask from "../pages/Task/Edittask";
 import Clients from "../pages/Clients";
 import Users from "../pages/User/UserList";
 import NewUser from "../pages/User/NewUser";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ProtectedRoute from './ProtectedRoute'
+
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public route */}
+
+        {/* Default Route */}
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+
+        {/* Public Route */}
         <Route path="/login" element={<Login />} />
 
-        {/* Protected layout routes */}
-        <Route element={<DashboardLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="tasks" element={<Tasks />} />
-          <Route path="newtasks" element={<Newtasks />} />
-          <Route path="tasks/:id/edit" element={<Newtasks />} />
-          {/* <Route path="addcustomer" element={<AddCustomer />} /> */}
-          <Route path="clients" element={<Clients />} />
-           <Route path="users" element={<Users />} />
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<DashboardLayout />}>
+
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="tasks" element={<Tasks />} />
+            <Route path="newtasks" element={<Newtasks />} />
+            <Route path="tasks/:id/edit" element={<Newtasks />} />
+            <Route path="clients" element={<Clients />} />
+            <Route path="users" element={<Users />} />
             <Route path="users/add" element={<NewUser />} />
             <Route path="users/edit/:id" element={<NewUser />} />
-          {/* <Route path="customers" element={<Customers />} /> */}
+
+          </Route>
         </Route>
+
       </Routes>
     </BrowserRouter>
   );
 }
+
