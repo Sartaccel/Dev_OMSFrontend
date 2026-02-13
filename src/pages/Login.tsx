@@ -22,12 +22,30 @@ const {
     resolver: yupResolver(loginValidation),
   });
 
-  const onSubmit = async (data:any) => {
-    try {
-      await dispatch(login(data));
-      navigate("/");
-    } catch {}
-  };
+  const onSubmit = async (data: any) => {
+  try {
+    await dispatch(login(data)).unwrap();
+  } catch {}
+
+  localStorage.setItem("token", "dummy");
+  navigate("/dashboard");
+};
+
+// const onSubmit = async (data: any) => {
+//   try {
+//     const res = await dispatch(login(data)).unwrap();
+
+//     console.log("Login Success", res);
+//     console.log("Token:", localStorage.getItem("token"));
+
+//     navigate("/dashboard");
+
+//   } catch (err) {
+//     console.log("Login Failed", err);
+//   }
+// };
+
+
   const emailValue = watch("email");
 const passwordValue = watch("password");
 

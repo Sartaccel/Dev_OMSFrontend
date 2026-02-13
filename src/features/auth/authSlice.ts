@@ -15,30 +15,34 @@ interface AuthState {
   user: User | null;
   loading: boolean;
   error: string | null;
+  token: string | null;
+  isAuthenticated: boolean;
 }
 
 /* ================= INITIAL STATE ================= */
+const token = localStorage.getItem("token");
 
 const initialState: AuthState = {
   user: null,
+  token: token,
+  isAuthenticated: !!token,
   loading: false,
-  error: null,
-};
+  error: null
+}
 
 /* ================= LOGIN THUNK ================= */
 
 export const login = createAsyncThunk<
-  User, // Success Return Type
-  { email: string; password: string }, // Request Body Type
-  { rejectValue: string } // Error Type
+  User,
+  { email: string; password: string },
+  { rejectValue: string }
 >("auth/login", async (data, thunkAPI) => {
   try {
-    return {
-      id: "1",
-      name: "OMS User",
-      email: data.email,
-      token: "fake-jwt-token",
-    };
+
+    const res = await axios.post("/auth/login", data);
+
+    return res.data;
+
   } catch (err: any) {
     return thunkAPI.rejectWithValue(
       err.response?.data?.message || "Login Failed"
@@ -69,6 +73,12 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
         state.loading = false;
         state.user = action.payload;
+       const token = action.payload.token || "dummy-token-123";
+
+  state.token = token;
+        state.isAuthenticated = true;
+       localStorage.setItem("token", action.payload.token);
+
       })
 
       /* LOGIN FAILED */
