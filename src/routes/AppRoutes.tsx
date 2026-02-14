@@ -23,7 +23,7 @@ export default function AppRouter() {
           <Route index element={<Dashboard />} />
           <Route path="tasks" element={<Tasks />} />
           <Route path="newtasks" element={<Newtasks />} />
-          <Route path="tasks/:id/edit" element={<Newtasks />} />
+          <Route path="tasks/edit/:id" element={<Newtasks />} />
           {/* <Route path="addcustomer" element={<AddCustomer />} /> */}
           <Route path="clients" element={<Clients />} />
            <Route path="users" element={<Users />} />

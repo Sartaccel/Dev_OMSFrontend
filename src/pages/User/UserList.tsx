@@ -6,6 +6,7 @@ import plusIcon from "../../assets/images/plus.svg";
 
 import DataTable, { type Column } from "../../components/table/DataTable";
 import UserRow from "../../components/table/UserRow";
+import Button from "../../components/Button";
 
 
 const users = [
@@ -20,6 +21,15 @@ const users = [
   },
   {
     id: 2,
+    name: "Jocelyn Workman",
+    role: "Associate",
+    username: "jocelynworkman@sart.com",
+    mobile: "9087654323",
+    email: "jocelynworkman@sart.com",
+    img: "https://i.pravatar.cc/40?img=2",
+  },
+    {
+    id: 3,
     name: "Jocelyn Workman",
     role: "Associate",
     username: "jocelynworkman@sart.com",
@@ -45,7 +55,7 @@ export default function UsersList() {
   ];
 
   return (
-    <div>
+    <div className="font-app">
       <div className="bg-white border border-blue-100 rounded-md">
 
     
@@ -92,16 +102,15 @@ export default function UsersList() {
           </div>
 
           {/* Add */}
-          <button
-            onClick={() => navigate("/users/add")}
-            className="
-              bg-blue-600 text-white px-6 py-2 rounded-md
-              text-sm flex items-center gap-2
-            "
-          >
-            <img src={plusIcon} className="w-4 h-4" />
-            Add
-          </button>
+       <Button
+  label="Add"
+  type="button"
+  onClick={() => navigate("/users/add")}
+  className="flex items-center gap-2 px-6"
+>
+  <img src={plusIcon} className="w-4 h-4" />
+</Button>
+
 
         </div>
 
