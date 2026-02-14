@@ -1,3 +1,6 @@
+
+import * as yup from "yup";
+
 import Input from "../../components/form/input";
 import ArrowLeft from "../../assets/images/arrow-left.svg";
 import Button from "../../components/Button";
@@ -6,9 +9,45 @@ import Toggle from "../../components/form/Toggle";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import {
+  nameRule,
+  emailRule,
+  passwordRule,
+  usernameRule,
+  mobileRule,
+} from "../../validations/commonRules";
+
+/* ===================================
+   VALIDATION SCHEMA
+=================================== */
+
+const userSchema = yup.object().shape({
+  name: nameRule,
+
+  username: usernameRule,
+
+  email: emailRule,
+
+  password: passwordRule,
+
+  mobile: mobileRule,
+
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password")], "Passwords must match")
+    .required("Confirm password is required"),
+
+  role: yup.string().required("Role is required"),
+});
+
+/* ===================================
+   COMPONENT
+=================================== */
+
 const NewUser = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); 
+  const { id } = useParams();
+
   const isEditMode = Boolean(id);
 
   const [isActive, setIsActive] = useState(true);
@@ -23,15 +62,19 @@ const NewUser = () => {
     role: "",
   });
 
-  
+  const [errors, setErrors] = useState<any>({});
+
+  /* ===================================
+     LOAD EDIT DATA
+  =================================== */
+
   useEffect(() => {
     if (isEditMode) {
-      
       const userData = {
         name: "Madelyn Philips",
-        username: "madelynphilips@sart.com",
+        username: "madelyn123",
         mobile: "9087654323",
-        email: "madelynphilips@sart.com",
+        email: "madelyn@sart.com",
         role: "Manager",
       };
 
@@ -44,49 +87,88 @@ const NewUser = () => {
     }
   }, [id, isEditMode]);
 
- 
-  const handleChange = (
+  /* ===================================
+     HANDLE CHANGE
+  =================================== */
+
+  const handleChange = async (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
 
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
+
+    try {
+      await userSchema.validateAt(name, {
+        ...formData,
+        [name]: value,
+      });
+
+      setErrors((prev: any) => ({
+        ...prev,
+        [name]: "",
+      }));
+    } catch (err: any) {
+      setErrors((prev: any) => ({
+        ...prev,
+        [name]: err.message,
+      }));
+    }
   };
 
+  /* ===================================
+     SUBMIT
+  =================================== */
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (isEditMode) {
-      console.log("Update User:", {
-        ...formData,
-        isActive,
-        id,
+    try {
+      await userSchema.validate(formData, {
+        abortEarly: false,
       });
 
-    } else {
-      console.log("Create User:", {
-        ...formData,
-        isActive,
+      setErrors({});
+
+      if (isEditMode) {
+        console.log("Update User:", {
+          ...formData,
+          isActive,
+          id,
+        });
+      } else {
+        console.log("Create User:", {
+          ...formData,
+          isActive,
+        });
+      }
+
+      navigate("/users");
+    } catch (err: any) {
+      const validationErrors: any = {};
+
+      err.inner.forEach((error: any) => {
+        validationErrors[error.path] = error.message;
       });
 
-      
+      setErrors(validationErrors);
     }
-
-    navigate("/users");
   };
 
+  /* ===================================
+     UI
+  =================================== */
+
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="min-h-screen font-app px-2 sm:px-4">
+      <div className="bg-white rounded-lg max-w-7xl w-full mx-auto p-4 sm:p-6">
 
-      <div className="bg-white rounded-lg max-w-[2200px] mx-auto p-6">
+        {/* HEADER */}
 
-       
-        <div className="flex items-center gap-2 text-base text-gray-700 mb-6 font-medium">
-
+        <div className="flex flex-wrap items-center gap-2 text-sm sm:text-base text-gray-700 mb-6 font-medium">
           <img
             src={ArrowLeft}
             alt="Back"
@@ -101,192 +183,161 @@ const NewUser = () => {
           <span className="font-bold text-gray-600">
             {isEditMode ? "Edit User" : "New User"}
           </span>
-
         </div>
 
-       
-        <div className="border-t border-blue-200 -mt-4 mb-4 -mx-6"></div>
+        {/* DIVIDER */}
+
+        <div className="border-t border-blue-200 -mt-4 mb-4 -mx-4 sm:-mx-6"></div>
 
         <h2 className="text-base font-semibold mb-3">
           Photo & Details
         </h2>
 
-        <div className="flex flex-col gap-4">
+        {/* FORM */}
 
-         
-          <div className="flex justify-start mb-3">
+        <form onSubmit={handleSubmit} className="w-full">
 
-            <label
-              htmlFor="photoUpload"
-              className="
-                w-[120px] h-[120px]
-                bg-blue-50
-                border border-blue-200
-                rounded-xl
-                shadow-sm
-                flex flex-col
-                items-center
-                justify-center
-                cursor-pointer
-                hover:shadow-md
-                transition
-              "
-            >
+          {/* RESPONSIVE GRID */}
 
-             
-              <svg
-                className="w-8 h-8 mb-2 text-gray-800"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                viewBox="0 0 24 24"
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 max-w-[650px] w-full">
+
+            {/* NAME */}
+
+            <Input
+              label="Name *"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Name"
+              error={errors.name}
+            />
+
+            {/* USERNAME */}
+
+            <Input
+              label="Username *"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="Username"
+              error={errors.username}
+            />
+
+            {/* MOBILE */}
+
+            <Input
+              label="Mobile"
+              name="mobile"
+              value={formData.mobile}
+              onChange={handleChange}
+              placeholder="Mobile"
+              error={errors.mobile}
+            />
+
+            {/* EMAIL */}
+
+            <Input
+              label="Email *"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email"
+              error={errors.email}
+            />
+
+            {/* PASSWORD */}
+
+            <Input
+              label="Password *"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Password"
+              error={errors.password}
+            />
+
+            {/* CONFIRM PASSWORD */}
+
+            <Input
+              label="Confirm Password *"
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              placeholder="Confirm Password"
+              error={errors.confirmPassword}
+            />
+
+            {/* ROLE */}
+
+            <div className="w-full">
+
+              <label className="block text-sm font-medium mb-1">
+                Role *
+              </label>
+
+              <select
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="
+                  w-full h-[46px]
+                  border border-gray-300
+                  rounded-md
+                  px-3
+                  bg-gray-50
+                  text-sm
+                  focus:outline-none
+                  focus:ring-1
+                  focus:ring-blue-500
+                "
               >
-                <path d="M20 16.5a4.5 4.5 0 00-1.9-8.6A6 6 0 006.2 9.2" />
-                <path d="M6 16.5a4.5 4.5 0 01.2-9" />
-                <path d="M12 12v7" />
-                <path d="M9 9l3-3 3 3" />
-              </svg>
+                <option value="">Select Role</option>
+                <option value="Manager">Manager</option>
+                <option value="Admin">Admin</option>
+                <option value="Staff">Staff</option>
+              </select>
 
-              <span className="text-sm text-gray-800 font-medium text-center">
-                Upload<br />photo
-              </span>
+              {errors.role && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.role}
+                </p>
+              )}
 
-              <input
-                type="file"
-                id="photoUpload"
-                accept="image/*"
-                hidden
+            </div>
+
+            {/* ACTIVE */}
+
+            <div className="flex items-center gap-4 mt-4 sm:mt-6">
+
+              <Toggle
+                label="Is Active?"
+                checked={isActive}
+                onChange={setIsActive}
               />
 
-            </label>
+            </div>
 
           </div>
 
-          
-          <form onSubmit={handleSubmit} className="w-full">
+          {/* BUTTON */}
 
-           
-            <div className="grid grid-cols-2 gap-x-10 gap-y-4 max-w-[650px]">
+          <div className="mt-8 sm:mt-10 w-full sm:w-auto">
 
-              <Input
-                label="Name *"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Name"
-              />
+            <Button
+              label={isEditMode ? "Update" : "Save"}
+              type="submit"
+              className="w-full sm:w-auto"
+            />
 
-              <Input
-                label="Username *"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                placeholder="Username"
-              />
+          </div>
 
-              <Input
-                label="Mobile"
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleChange}
-                placeholder="Mobile"
-              />
-
-              <Input
-                label="Email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Email"
-              />
-
-              <Input
-                label="Password *"
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Password"
-              />
-
-              <Input
-                label="Confirm Password *"
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                placeholder="Confirm Password"
-              />
-
-           
-              <div>
-
-                <label className="block text-sm font-medium mb-1">
-                  Role *
-                </label>
-
-                <select
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="
-                    w-full h-[46px]
-                    border border-gray-300
-                    rounded-md
-                    px-3
-                    bg-gray-50
-                    text-sm
-                    focus:outline-none
-                    focus:ring-1
-                    focus:ring-blue-500
-                  "
-                >
-                  <option value="">Select Role</option>
-                  
-                </select>
-
-                <p className="text-xs text-gray-400 mt-2 flex gap-1">
-                  To create custom user roles go to setting
-                  <span className="text-blue-600 cursor-pointer hover:underline font-medium">
-                    User Roles
-                  </span>
-                </p>
-
-              </div>
-
-              <div className="flex items-center gap-4 mt-6">
-
-                <Toggle
-                  label="Is Active?"
-                  checked={isActive}
-                  onChange={setIsActive}
-                />
-
-              </div>
-
-            </div>
-
-           
-            <div className="mt-10">
-
-              <Button
-                label={isEditMode ? "Update" : "Save"}
-                type="submit"
-              />
-
-            </div>
-
-          </form>
-
-        </div>
+        </form>
 
       </div>
-
     </div>
   );
 };
 
 export default NewUser;
-

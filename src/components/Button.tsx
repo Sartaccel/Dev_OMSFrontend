@@ -1,11 +1,12 @@
 import React from "react";
 
 interface ButtonProps {
-  label: string;
+  label?: string; // optional now
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
   disabled?: boolean;
   className?: string;
+  children?: React.ReactNode; // 👈 IMPORTANT
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -14,6 +15,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   disabled = false,
   className = "",
+  children,
 }) => {
   return (
     <button
@@ -21,7 +23,8 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       disabled={disabled}
       className={`
-        bg-blue-600
+        bg-blue-500
+         font-app
         text-white
         px-12
         py-2.5
@@ -29,16 +32,19 @@ const Button: React.FC<ButtonProps> = ({
         text-sm
         font-medium
         transition
-        hover:bg-blue-700
+        hover:opacity-90
         focus:outline-none
         focus:ring-2
-        focus:ring-blue-400
+        focus:ring-primaryBlue
         disabled:opacity-50
         disabled:cursor-not-allowed
         ${className}
       `}
     >
-      {label}
+      <div className="flex items-center gap-2 justify-center">
+        {children}
+        {label}
+      </div>
     </button>
   );
 };

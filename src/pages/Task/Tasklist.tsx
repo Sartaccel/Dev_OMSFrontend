@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "../../components/form/dropdown";
 import Checkbox from "../../components/form/checkbox";
+import ActionMenu from "../../components/form/ActionMenu";
 
 
 const Tasklist = () => {
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const [rows, setRows] = useState<boolean[]>([false]);
-  const [openMenu, setOpenMenu] = useState<number | null>(null);
-
+  
   const navigate = useNavigate();
 
   return (
@@ -177,34 +177,14 @@ const Tasklist = () => {
               Pending
             </span>
           </span>
+<div className="px-2 flex justify-center">
+  <ActionMenu
+    id={1} // later replace with task.id when API added
+    basePath="tasks"
+  
+  />
+</div>
 
-          <div className="relative px-2">
-            <button
-              onClick={() => setOpenMenu(openMenu === 0 ? null : 0)}
-              className="text-gray-400 text-lg leading-none"
-            >
-              ⋮
-            </button>
-
-            {openMenu === 0 && (
-              <div
-                className="absolute right-0 top-full mt-2 z-50
-                 bg-white border border-blue-100
-                 rounded-md shadow-lg w-28"
-              >
-                <button
-                  onClick={() => {
-                    setOpenMenu(null);
-                    navigate(`/tasks/1/edit`); 
-                  }}
-                  className="w-full text-left px-3 py-2 text-sm hover:bg-blue-50"
-                >
-                  Edit
-                </button>
-
-              </div>
-            )}
-          </div>
 
 
         </div>
