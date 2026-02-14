@@ -8,6 +8,8 @@ import { useAppDispatch } from "@/app/hooks";
 import loginBg from "@/assets/images/login-bg.png";
 import logo from "@/assets/images/logo_icon.png";
 import { Mail, EyeOff } from "lucide-react";
+import Auth from "./Auth";
+
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -31,6 +33,7 @@ const {
   navigate("/dashboard");
 };
 
+
 // const onSubmit = async (data: any) => {
 //   try {
 //     const res = await dispatch(login(data)).unwrap();
@@ -52,21 +55,10 @@ const passwordValue = watch("password");
 const isFormValid = emailValue && passwordValue;
 
   return (
-<div className="h-screen bg-primaryBlue overflow-hidden flex items-center justify-center">
 
-  <div className="flex w-full max-w-6xl mx-auto items-center">
-
-    {/* LEFT IMAGE */}
-<div className="hidden md:flex md:w-[55%] h-full items-center justify-center overflow-hidden">
-  <img
-    src={loginBg}
-    alt="Login"
-    className="h-full w-full object-cover scale-110"
-  />
-</div>
-
+<Auth>
     {/* RIGHT LOGIN */}
-    <div className="flex w-full md:w-[45%] items-center justify-center">
+
       
       <div className="bg-white p-8 rounded-2xl shadow-xl w-[400px]">
 
@@ -104,6 +96,7 @@ const isFormValid = emailValue && passwordValue;
             </label>
 
             <button
+            onClick={() => navigate("/forgot-password")}
               type="button"
               className="hover:underline"
             >
@@ -126,19 +119,20 @@ const isFormValid = emailValue && passwordValue;
 </button>
 <p className="text-sm text-center mt-4">
   Don’t have an account?{" "}
-  <span className="text-primaryBlue font-medium cursor-pointer">
-    Sign up
-  </span>
+  <span
+  onClick={() => navigate("/signup")}
+  className="text-primaryBlue font-medium cursor-pointer"
+>
+  Sign up
+</span>
+
 </p>
         </form>
 
       </div>
 
-    </div>
-
-  </div>
-
-</div>
+ 
+</Auth>
 
 
 
