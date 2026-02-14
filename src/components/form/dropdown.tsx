@@ -1,49 +1,100 @@
-import { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 interface DropdownProps {
   label: string;
   options: string[];
+  value?: string;
+  onChange?: (value: string) => void;
   error?: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ label, options, error }) => {
-  const [value, setValue] = useState<string>("");
+const Dropdown: React.FC<DropdownProps> = ({
+  label,
+  options,
+  value,
+  onChange,
+  error,
+}) => {
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!dropdownRef.current?.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <div className="w-full">
+    <div className="relative w-full" ref={dropdownRef}>
+
       {/* Label */}
-      <label className="block text-sm font-medium mb-1">
-        {label}
-      </label>
+      {label && (
+        <label className="block text-sm font-medium mb-1 text-gray-700">
+          {label}
+        </label>
+      )}
 
-
+      {/* Field — EXACT SAME STYLE AS INPUT */}
       <div
-        className={`relative flex items-center border-[1.2px] rounded-[3px] h-[50px] px-0 bg-gray-50
-  ${error ? "border-red-500" : "border-[rgba(223,233,239,1)]"}
-  focus-within:ring-1 focus-within:ring-blue-300
-`}
+        onClick={() => setOpen(!open)}
+        className={`
+          relative flex items-center
+          border rounded-md
+          h-[46px] px-3
+          transition-all duration-150
+          bg-[#F4F7FA] border-[#E2E8F0]
+          cursor-pointer
+          ${error ? "border-red-500" : ""}
+          ${open ? "border-blue-500 ring-1 ring-blue-500" : ""}
+        `}
       >
-        <select
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          className="w-full h-full outline-none text-sm bg-transparent appearance-none cursor-pointer px-4 pr-8 box-border"
+        <span className="text-sm text-gray-700">
+          {value || "Select"}
+        </span>
+
+        {/* Arrow */}
+        <span
+          className={`absolute right-3 text-gray-400 transition-transform ${open ? "rotate-180" : ""
+            }`}
         >
-
-          <option value="" disabled>
-            Select
-          </option>
-          {options.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
-
-        {/* Custom dropdown arrow */}
-        <span className="pointer-events-none text-gray-400 absolute right-4">
           ▼
         </span>
       </div>
+
+      {/* Dropdown panel */}
+      {open && (
+        <div className="absolute left-0 mt-1 w-full border border-gray-200 rounded-md bg-white shadow-lg z-50 overflow-hidden">
+
+          <div
+            onClick={() => {
+              onChange?.("");
+              setOpen(false);
+            }}
+            className="px-3 py-2 text-sm hover:bg-blue-50 cursor-pointer"
+          >
+            Select
+          </div>
+
+          {options.map((opt) => (
+            <div
+              key={opt}
+              onClick={() => {
+                onChange?.(opt);
+                setOpen(false);
+              }}
+              className="px-3 py-2 text-sm hover:bg-blue-50 cursor-pointer"
+            >
+              {opt}
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Error */}
       {error && (

@@ -17,9 +17,11 @@ const Textarea: React.FC<TextareaProps> = ({ label, error, ...rest }) => {
             {/* Textarea */}
             <textarea
                 {...rest}
-                className={`w-full rounded border px-3 py-2 text-sm outline-none bg-gray-50
-        ${error ? "border-red-500" : "border-blue-100"}
-        focus:ring-2 focus:ring-primaryBlue`}
+                className={`w-full rounded-md px-3 py-2 text-sm outline-none
+bg-[#F4F7FA] border
+${error ? "border-red-500" : "border-[#E2E8F0]"}
+focus:border-blue-500 focus:ring-1 focus:ring-blue-500`}
+
             />
 
             {/* Error */}
